@@ -72,16 +72,17 @@ export async function POST(req: Request) {
     }
 
     const user = {
-      clerkId: id,
+      clerkUserId: id,
       email: email_addresses[0].email_address,
-      ...(first_name ? { firstName: first_name } : {}),
-      ...(last_name ? { lastName: last_name } : {}),
-      ...(image_url ? { imageUrl: image_url } : {}),
-      //...(organization_memberships ? { role: organization_memberships } : {}),
+      firstName: first_name || null,
+      lastName: last_name || null,
+      imageUrl: image_url || null,
+      role: "USER" as const,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
 
-    // @ts-ignore
-    await createUser(user as User);
+    await createUser(user as unknown as User);
   }
 
   return new Response("", { status: 200 });
