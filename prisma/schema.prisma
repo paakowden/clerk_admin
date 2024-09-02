@@ -20,15 +20,14 @@ datasource db {
 
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  clerkId       String    @unique
+   id           String    @id @default(auto()) @map("_id") @db.ObjectId
   email         String   
   username      String
   image         String?
-  firstname     String
-  lastname      String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime  @updatedAt
+  first_name     String
+  last_name      String
+  created_at     DateTime @default(now())
+  updated_at     DateTime  @updatedAt
   role  Role    @default(USER)
 }
 
