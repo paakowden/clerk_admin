@@ -80,6 +80,7 @@ export async function POST(req: Request) {
       ...(organization_memberships ? { role: organization_memberships } : {}),
     };
 
+    // @ts-ignore
     await createUser(user as User);
   }
 
