@@ -26,7 +26,7 @@ export async function createUser(user: any) {
         updated_at,
       },
     });
-    return newUser;
+    return JSON.parse(JSON.stringify(newUser));
   } catch (error) {
     console.log(error);
   }
