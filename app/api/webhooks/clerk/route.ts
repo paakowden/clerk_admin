@@ -77,7 +77,7 @@ export async function POST(req: Request) {
       ...(first_name ? { firstName: first_name } : {}),
       ...(last_name ? { lastName: last_name } : {}),
       ...(image_url ? { imageUrl: image_url } : {}),
-      ...(organization_memberships ? { role: organization_memberships } : {}),
+      //...(organization_memberships ? { role: organization_memberships } : {}),
     };
 
     // @ts-ignore
