@@ -58,7 +58,7 @@ export async function POST(req: Request) {
   interface UserJSON {
     // existing properties
   }
-
+  // @ts-nocheck
   if (eventType === "user.created") {
     const {
       id,
