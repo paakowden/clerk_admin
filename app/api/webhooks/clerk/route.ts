@@ -67,7 +67,7 @@ export async function POST(req: Request) {
       first_name,
       last_name,
       username,
-      role,
+      organization_memberships,
       created_at,
       updated_at,
     } = evt.data;
@@ -79,7 +79,7 @@ export async function POST(req: Request) {
       photo: image_url,
       first_name: first_name,
       last_name: last_name,
-      role: role,
+      role: organization_memberships,
       created_at: created_at,
       updated_at: updated_at,
     };
