@@ -1,8 +1,8 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
-import { clerkClient, WebhookEvent } from "@clerk/nextjs/server";
-import { createUser } from "@/actions/user.actions";
-import { NextResponse } from "next/server";
+import { WebhookEvent } from "@clerk/nextjs/server";
+import { createUser } from "@/lib/users";
+import { User } from "@prisma/client";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the endpoint
@@ -52,54 +52,37 @@ export async function POST(req: Request) {
 
   // Do something with the payload
   // For this guide, you simply log the payload to the console
-  const { id } = evt.data;
+  //const { id } = evt.data;
   const eventType = evt.type;
 
-  interface UserJSON {
-    // existing properties
-  }
-  // @ts-nocheck
   if (eventType === "user.created") {
     const {
       id,
       email_addresses,
-      image_url,
       first_name,
       last_name,
-      username,
+      image_url,
       organization_memberships,
-      created_at,
-      updated_at,
     } = evt.data;
+
+    if (!id || !email_addresses) {
+      return new Response("Error occured -- missing data", {
+        status: 400,
+      });
+    }
 
     const user = {
       clerkId: id,
       email: email_addresses[0].email_address,
-      username: username,
-      image: image_url,
-      first_name: first_name,
-      last_name: last_name,
-      role: organization_memberships,
-      created_at: created_at,
-      updated_at: updated_at,
+      ...(first_name ? { firstName: first_name } : {}),
+      ...(last_name ? { lastName: last_name } : {}),
+      ...(image_url ? { imageUrl: image_url } : {}),
+      ...(organization_memberships ? { role: organization_memberships } : {}),
     };
-    console.log(user);
 
-    const newUser = await createUser(user);
-
-    if (newUser) {
-      await clerkClient.users.updateUserMetadata(id, {
-        publicMetadata: {
-          userId: newUser.id,
-        },
-      });
-    }
-
-    return NextResponse.json({ message: "New user created", user: newUser });
+    // @ts-ignore
+    await createUser(user as User);
   }
-
-  console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
-  console.log("Webhook body:", body);
 
   return new Response("", { status: 200 });
 }
