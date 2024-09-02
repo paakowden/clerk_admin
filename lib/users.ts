@@ -1,5 +1,5 @@
 import { User } from "@prisma/client";
-import prismadb from "./prismadb";
+import prismadb from "@/lib/prismadb";
 
 export async function createUser(data: User) {
   try {
