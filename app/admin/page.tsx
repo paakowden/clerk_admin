@@ -12,7 +12,7 @@ const Admin = async () => {
   // return <div>Access Denied</div>;
   //}
 
-  if (!user || user.publicMetadata?.role !== "ADMIN") {
+  if (!user || user.publicMetadata.role !== "ADMIN") {
     return redirect("/");
   }
   return (
